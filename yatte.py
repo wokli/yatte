@@ -38,20 +38,11 @@ if __name__ == '__main__':
 
     context = {'var': '__var__', 'list': range(5)}
     tmpl = Template("""
-Start {{var}}
-{% if 2 < 5 %}
-    Test inner
-    {% if 5 < 10 %}
-        Test inner-inner
-    {% end %}
-
     {% each list %}
         {% if _ < 3 %}
             sup {{ _ }}
         {% end %}
     {% end %}
-{% end %}
-Test outer
 """)
 
     print tmpl.render(context)
