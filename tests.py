@@ -2,6 +2,7 @@ import unittest
 from yatte import Template as t
 from nodes import resolve, condition_eval
 
+
 class BasicTest(unittest.TestCase):
 
     def test_text_node(self):
@@ -52,14 +53,13 @@ class BlockTest(unittest.TestCase):
 class OtherTest(unittest.TestCase):
 
     def test_resolver(self):
-        self.assertEquals(resolve('q', {'a':1}, {'q':2}), 2)
+        self.assertEquals(resolve('q', {'a': 1}, {'q': 2}), 2)
 
     def test_condition_eval(self):
         self.assertEquals(condition_eval('2 < 5'), True)
         self.assertEquals(condition_eval('3 > 6'), False)
-        self.assertEquals(condition_eval('q > 8', {'q':9}), True)
-        self.assertEquals(condition_eval('q > 8', {'q':2}), False)
-
+        self.assertEquals(condition_eval('q > 8', {'q': 9}), True)
+        self.assertEquals(condition_eval('q > 8', {'q': 2}), False)
 
 
 class ErrorHandlingTest(unittest.TestCase):

@@ -1,3 +1,4 @@
+from errors import TmplSyntaxError
 import operator
 
 ops = {
@@ -8,10 +9,6 @@ ops = {
     '<=': operator.le,
     '>=': operator.ge
 }
-
-
-class TmplSyntaxError(Exception):
-    pass
 
 
 def resolve(name, *args):
@@ -32,7 +29,7 @@ def condition_eval(expr, *args):
     op = ops.get(op, None)
 
     if op is None:
-        raise TmplSyntaxError
+        raise TmplSyntaxError()
 
     try:
         arg1 = int(arg1)
@@ -48,8 +45,8 @@ def condition_eval(expr, *args):
     # TODO: handle not found
     return op(arg1, arg2)
 
-# Do i really need base class?
-class Node():
+
+class Node(object):
 
     def __init__(self, content=None):
         self.content = content
@@ -70,12 +67,7 @@ class Text(Node):
 class Var(Node):
 
     def render(self, *args):
-        # TODO: refactor resolving
-        for context in args:
-            resolved_var = context.get(self.content, None)
-            if resolved_var is not None:
-                break
-
+        resolved_var = resolve(self.content, *args)
         return str(resolved_var)
 
 

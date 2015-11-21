@@ -1,21 +1,23 @@
 from nodes import Text, Var, Block, Root
 from lexer import each_fragment, TEXT_FRAGMENT, VAR_FRAGMENT, OPEN_BLOCK_FRAGMENT, CLOSE_BLOCK_FRAGMENT
+from errors import StackOverflowError, StackUnderflowError
 
 
-class Template:
+class Template(object):
 
     def __init__(self, src):
         self.src = src
-
-        root = Root()
-        stack = [root]
+        self.root = Root()
+        stack = [self.root]
 
         # build AST
-
         for f in each_fragment(src):
             if f.type == TEXT_FRAGMENT:
                 # TODO: handle stack overflow
-                stack[-1].add_child(Text(f.clean))
+                try:
+                    stack[-1].add_child(Text(f.clean))
+                except IndexError:
+                    raise StackOverflowError(f)
             elif f.type == VAR_FRAGMENT:
                 stack[-1].add_child(Var(f.clean))
             elif f.type == OPEN_BLOCK_FRAGMENT:
@@ -24,9 +26,10 @@ class Template:
                 stack.append(block)
             elif f.type == CLOSE_BLOCK_FRAGMENT:
                 # TODO: handle stack underflow
-                stack.pop()
-
-        self.root = root
+                try:
+                    stack.pop()
+                except IndexError:
+                    raise StackUnderflowError(f)
 
     def render(self, context):
         res = ''
@@ -37,12 +40,10 @@ class Template:
 if __name__ == '__main__':
 
     context = {'var': '__var__', 'list': range(5)}
-    tmpl = Template("""
-    {% each list %}
+    tmpl = Template("""{% each list %}
         {% if _ < 3 %}
             sup {{ _ }}
         {% end %}
-    {% end %}
-""")
+    {% end %}""")
 
     print tmpl.render(context)
