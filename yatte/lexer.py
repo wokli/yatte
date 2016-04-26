@@ -10,14 +10,12 @@ VAR_TOKEN_END = '}}'
 BLOCK_TOKEN_START = '{%'
 BLOCK_TOKEN_END = '%}'
 
-TOKEN_REGEX = re.compile(r"(%s.*?%s|%s.*?%s)" % (
+TOKEN_REGEX = re.compile(r"({}.*?{}|{}.*?{})".format(
     VAR_TOKEN_START,
     VAR_TOKEN_END,
     BLOCK_TOKEN_START,
     BLOCK_TOKEN_END
 ))
-
-# TODO: store line number for error reporting
 
 
 class _Fragment(object):
@@ -42,7 +40,7 @@ class _Fragment(object):
             return TEXT_FRAGMENT
 
     def __repr__(self):
-        return "%s %s" % (self.clean, self.type)
+        return "{} {}".format(self.clean, self.type)
 
 
 def each_fragment(program):

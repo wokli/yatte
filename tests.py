@@ -1,6 +1,6 @@
 import unittest
 from yatte import Template as t
-from nodes import resolve, condition_eval
+from yatte.nodes import resolve, condition_eval
 
 
 class BasicTest(unittest.TestCase):

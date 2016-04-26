@@ -50,6 +50,10 @@ class Node(object):
 
     def __init__(self, content=None):
         self.content = content
+        self.children = []
+
+    def add_child(self, child): 
+        self.children.append(child)
 
     def render(self, *args):
         pass
@@ -74,12 +78,8 @@ class Var(Node):
 class Block(Node):
 
     def __init__(self, content=None):
-        self.children = []
-        self.content = content
         self.type, self.expr = content.split(' ', 1)
-
-    def add_child(self, child):
-        self.children.append(child)
+        super(Block, self).__init__(content)
 
     def render(self, *args):
 
@@ -96,10 +96,5 @@ class Block(Node):
             return res
 
 
-class Root():
-
-    def __init__(self):
-        self.children = []
-
-    def add_child(self, child):
-        self.children.append(child)
+class Root(Node):
+    pass

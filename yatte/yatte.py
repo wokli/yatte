@@ -13,7 +13,6 @@ class Template(object):
         # build AST
         for f in each_fragment(src):
             if f.type == TEXT_FRAGMENT:
-                # TODO: handle stack overflow
                 try:
                     stack[-1].add_child(Text(f.clean))
                 except IndexError:
@@ -25,7 +24,6 @@ class Template(object):
                 stack[-1].add_child(block)
                 stack.append(block)
             elif f.type == CLOSE_BLOCK_FRAGMENT:
-                # TODO: handle stack underflow
                 try:
                     stack.pop()
                 except IndexError:
@@ -37,13 +35,12 @@ class Template(object):
             res += child.render(context)
         return res
 
-if __name__ == '__main__':
 
+if __name__ == '__main__':
     context = {'var': '__var__', 'list': range(5)}
     tmpl = Template("""{% each list %}
         {% if _ < 3 %}
             sup {{ _ }}
         {% end %}
     {% end %}""")
-
     print tmpl.render(context)
