@@ -15,6 +15,9 @@
  
     sup 0 sup 1 sup 2
 
+ Tests:
+    python tests.py
+
 ### Template syntax:
 
 1. Variable:
