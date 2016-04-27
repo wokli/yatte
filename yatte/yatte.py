@@ -1,4 +1,4 @@
-from nodes import Text, Var, Block, Root
+from nodes import Text, Var, Block, Node
 from lexer import each_fragment, TEXT_FRAGMENT, VAR_FRAGMENT, OPEN_BLOCK_FRAGMENT, CLOSE_BLOCK_FRAGMENT
 from errors import StackOverflowError, StackUnderflowError
 
@@ -7,10 +7,9 @@ class Template(object):
 
     def __init__(self, src):
         self.src = src
-        self.root = Root()
+        self.root = Node()
         stack = [self.root]
 
-        # build AST
         for f in each_fragment(src):
             if f.type == TEXT_FRAGMENT:
                 try:

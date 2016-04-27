@@ -16,7 +16,6 @@ def resolve(name, *args):
         resolved_var = context.get(name, None)
         if resolved_var is not None:
             break
-
     return resolved_var
 
 
@@ -78,8 +77,8 @@ class Var(Node):
 class Block(Node):
 
     def __init__(self, content=None):
-        self.type, self.expr = content.split(' ', 1)
         super(Block, self).__init__(content)
+        self.type, self.expr = content.split(' ', 1)
 
     def render(self, *args):
 
@@ -94,7 +93,3 @@ class Block(Node):
                 res += ''.join(map(lambda x: x.render(*(args + ({'_': item},))), self.children))
 
             return res
-
-
-class Root(Node):
-    pass
